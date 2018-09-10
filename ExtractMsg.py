@@ -792,7 +792,8 @@ class Message(OleFile.OleFileIO):
                             'subject': xstr(self.subject),
                             'date': xstr(self.date),
                             'attachments': attachmentNames,
-                            'body': decode_utf7(self.body)}
+                            'body': decode_utf7(self.body),
+                            'urls': re.findall('https?://(?:[-\w.]|(?:%[\da-fA-F]{2}))+', decode_utf7(self.body))}
 
                 print json.dumps(emailObj, ensure_ascii=True)
             else:
