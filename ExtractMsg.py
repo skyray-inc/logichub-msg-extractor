@@ -433,7 +433,7 @@ class Message(OleFile.OleFileIO):
             are doing.
 
         """
-        print(prefix)
+        #print(prefix)
         #WARNING DO NOT MANUALLY MODIFY PREFIX. Let the program set it.
         self.__path = filename
         self.__attachmentClass = attachmentClass
@@ -781,10 +781,12 @@ class Message(OleFile.OleFileIO):
 
         oldDir = os.getcwd()
         try:
+            
             os.chdir(dirName)
 
             # Save the message body
             fext = 'json' if toJson else 'text'
+            print dirName+'/'+'message.'+fext
             f = open('message.' + fext, 'w')
             # From, to , cc, subject, date
 
@@ -862,7 +864,7 @@ class Message(OleFile.OleFileIO):
             os.chdir(oldDir)
 
     def dump(self):
-        # Prints out a summary of the message
+        ## Prints out a summary of the message
         print('Message')
         print('Subject:', self.subject)
         print('Date:', self.date)
@@ -884,25 +886,11 @@ class Message(OleFile.OleFileIO):
 
 if __name__ == '__main__':
     if len(sys.argv) <= 1:
-        print(__doc__)
-        print("""
-Launched from command line, this script parses Microsoft Outlook Message files
-and save their contents to the current directory.  On error the script will
-write out a 'raw' directory will all the details from the file, but in a
-less-than-desirable format. To force this mode, the flag '--raw'
-can be specified.
-
-Usage:  <file> [file2 ...]
-   or:  --raw <file>
-   or:  --json
-
-   to name the directory as the .msg file, --use-file-name
-""")
         sys.exit()
 
     writeRaw = False
     toJson = False
-    useFileName = False
+    useFileName = True
 
     for rawFilename in sys.argv[1:]:
         if rawFilename == '--raw':
@@ -922,6 +910,6 @@ Usage:  <file> [file2 ...]
                 else:
                     msg.save(toJson, useFileName)
             except Exception as e:
-                # msg.debug()
+                msg.debug()
                 print("Error with file '" + filename + "': " +
-                      traceback.format_exc())
+                        traceback.format_exc())
