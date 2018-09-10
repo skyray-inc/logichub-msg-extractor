@@ -767,27 +767,14 @@ class Message(OleFile.OleFileIO):
 
             dirName = dirName + ' ' + subject
 
-        try:
-            os.makedirs(dirName)
-        except Exception:
-            newDirName = addNumToDir(dirName)
-            if newDirName is not None:
-                dirName = newDirName
-            else:
-                raise Exception(
-                    "Failed to create directory '%s'. Does it already exist?" %
-                    dirName
-                    )
-
         oldDir = os.getcwd()
         try:
             
-            os.chdir(dirName)
+            #os.chdir(dirName)
 
             # Save the message body
             fext = 'json' if toJson else 'text'
-            print dirName+'/'+'message.'+fext
-            f = open('message.' + fext, 'w')
+            #f = open('message.' + fext, 'w')
             # From, to , cc, subject, date
 
 
@@ -807,17 +794,16 @@ class Message(OleFile.OleFileIO):
                             'attachments': attachmentNames,
                             'body': decode_utf7(self.body)}
 
-                f.write(json.dumps(emailObj, ensure_ascii=True))
+                print json.dumps(emailObj, ensure_ascii=True)
             else:
-                f.write('From: ' + xstr(self.sender) + self.__crlf)
-                f.write('To: ' + xstr(self.to) + self.__crlf)
-                f.write('CC: ' + xstr(self.cc) + self.__crlf)
-                f.write('Subject: ' + xstr(self.subject) + self.__crlf)
-                f.write('Date: ' + xstr(self.date) + self.__crlf)
-                f.write('-----------------' + self.__crlf + self.__crlf)
-                f.write(self.body)
+                print('From: ' + xstr(self.sender) + self.__crlf)
+                print('To: ' + xstr(self.to) + self.__crlf)
+                print('CC: ' + xstr(self.cc) + self.__crlf)
+                print('Subject: ' + xstr(self.subject) + self.__crlf)
+                print('Date: ' + xstr(self.date) + self.__crlf)
+                print('-----------------' + self.__crlf + self.__crlf)
+                print(self.body)
 
-            f.close()
 
         except Exception as e:
             self.saveRaw()
